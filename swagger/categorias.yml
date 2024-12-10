@@ -1,0 +1,23 @@
+openapi: 3.0.3
+info:
+  title: "API para guardar texto"
+  version: 1.0.0
+paths:
+  /hola:
+    get:
+      summary: obtener un saludo
+      tags:
+        - hola
+      responses:
+        200:
+          description: hola
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "hola"
+
+

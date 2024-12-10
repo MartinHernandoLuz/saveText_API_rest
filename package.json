@@ -4,6 +4,7 @@
   "description": "una api para guardar texto con usuarios",
   "main": "index.js",
   "scripts": {
+    "dev": "node --watch index.js",
     "test": "set NODE_OPTIONS=--experimental-vm-modules && jest"
   },
   "repository": {
