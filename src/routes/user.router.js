@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { actualizarRangoUser, createUser, loginUser } from "../controller/user.controller.js";
-import { reqControl, reqControlUpdateRango } from "../middleware/reqCorrecionUser.js";
+import { createUser } from "../controller/user.controller.js";
+import { reqControl } from "../middleware/reqCorrecionUser.js";
 import { esAdmin } from "../middleware/comprobarRango.js"
 
 const router = Router() // usa la función Router de Express, para construir las rutas 

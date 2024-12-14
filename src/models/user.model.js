@@ -1,5 +1,3 @@
-import db from "../config/db.js"
-
 import db from "../config/db.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -25,13 +23,14 @@ export const createUserDB = async (data) => {
 
 
     // This inserts the user into the Database with encrypted password
-    const sentence = "INSERT INTO users (email, password, username, full_name) VALUES (?, ?, ?, ?)";
+    const sentence = "INSERT INTO users (email, password_hash, username, full_name) VALUES (?, ?, ?, ?)";
     await db.query(sentence, [email, hashedPassword, username, full_name]);
 
     return {
       message: `user ${username} created successfully`
     };
   } catch (error) {
+    console.log(error.message)
     if (error.message != "this email or username already in use") {
       error.message = "unexpected error to create user"
     }

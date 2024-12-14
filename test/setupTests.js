@@ -1,9 +1,9 @@
-//import db from "../config/db";
+import db from '../src/config/db.js'
 
 
 
 afterAll(async () => {
-  //await db.end(); // Cerrar conexión con la base de datos si usas MySQL o similar
+  await db.end(); // Cerrar conexión con la base de datos si usas MySQL o similar
   const knockoutASCII = `
 ██╗  ██╗███╗   ██╗ ██████╗  ██████╗██╗  ██╗ ██████╗ ██╗   ██╗████████╗██╗
 ██║ ██╔╝████╗  ██║██╔═══██╗██╔════╝██║ ██╔╝██╔═══██╗██║   ██║╚══██╔══╝██║

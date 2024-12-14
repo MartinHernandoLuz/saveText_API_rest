@@ -20,4 +20,48 @@ paths:
                     type: string
                     example: "hola"
 
+  /user/create:
+    post:
+      summary: Create a user
+      tags:
+        - user
+      requestBody: # Define los parámetros de entrada
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "email@example.com"
+                password:
+                  type: string
+                  format: password
+                  example: "example_password"
+                username:
+                  type: string
+                  example: "@example_UserName"
+                full_name:
+                  type: string
+                  example: "Example Full Name"
+              required:
+                - email
+                - password
+                - username
+                - full_name
+      responses:
+        201:
+          description: Create user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User @example_UserName created successfully"
+
+
 
