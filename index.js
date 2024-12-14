@@ -6,7 +6,7 @@ import 'dotenv/config'
 // manejo de Errores inesperados
 app.use((err, req, res, next) => {
   console.error(err.stack); // Log del error
-  res.status(500).json({ error: "Algo salió mal en el servidor" });
+  res.status(500).json({ error: "Something went wrong on the server" });
 });
 
 
