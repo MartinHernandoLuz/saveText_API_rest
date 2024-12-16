@@ -17,7 +17,6 @@ export const createUserDB = async (data) => {
       throw new Error("this email or username already in use");
     }
 
-    // NOTA: el password debe ser menor a 70 characters, ponlo en un middleware
     // encript password
     const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -42,49 +41,49 @@ export const createUserDB = async (data) => {
 
 
 
-/*
-// Iniciar sesión en la base de datos
+
+// login
 export const loginUserDB = async (data) => {
   try {
     const { email, password } = data;
 
-    // Buscar al usuario por email
-    const sentence = "SELECT * FROM usuario WHERE email = ?";
+    // find the email
+    const sentence = "SELECT * FROM users WHERE email = ?";
     const [rows] = await db.query(sentence, [email]);
 
-    // Verificar si el email existe
+    // email exists?
     if (rows.length === 0) {
-      throw new Error("Email no encontrado");
+      throw new Error("Email not found");
     }
 
     const user = rows[0];
 
-    // Verificar la contraseña
-    const isPasswordValid = bcrypt.compareSync(password, user.password);
+    // Verify password
+    const isPasswordValid = bcrypt.compareSync(password, user.password_hash);
     if (!isPasswordValid) {
-      throw new Error("Contraseña incorrecta");
+      throw new Error("Incorrect password");
     }
 
-    // Generar el token JWT con email y rango
+    // Generate jwt (token)
     const token = jwt.sign(
-      { email: user.email, rango: user.rango },
+      { email: user.email, role: user.role_user },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" } // Tiempo de expiración del token
+      { expiresIn: "1h" } // token expiration time
     );
 
     return {
-      message: "Inicio de sesión exitoso",
       token: token,
     };
 
   } catch (error) {
-    if (error.message != "Email no encontrado" && error.message != "Contraseña incorrecta") {
-      error.message = "Error inesperado al loguearse"
+    console.log(error.message)
+    if (error.message != "Email not found" && error.message != "Incorrect password") {
+      error.message = "unexpected error to login"
     }
     throw new Error(error.message);
   }
 };
-*/
+
 
 /*
 // Iniciar sesión en la base de datos

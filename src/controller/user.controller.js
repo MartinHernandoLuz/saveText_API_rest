@@ -1,6 +1,6 @@
-import { createUserDB, } from '../models/user.model.js'
+import { createUserDB, loginUserDB, } from '../models/user.model.js'
 
-// function para create a user
+// function for create a user
 export const createUser = async (req, res) => {
     const data = req.body; // saca la data Email y contraseña
     try {
@@ -16,23 +16,20 @@ export const createUser = async (req, res) => {
 
 
 
-/*
-// función para iniciar sesión
+
+// function for login
 export const loginUser = async (req, res) => {
-    const data = req.body; // saca la data Email y contraseña
+    const data = req.body; // email and password
     try {
-        // envía data a una función que está en userModel.js
+        // send data to function in user.model.js
         const result = await loginUserDB(data);
-        res.status(201).json(result); // si funciona, envía un 201 CREATED
+        res.status(200).json(result); // if succesfull, status code 200 success 
     } catch (error) {
-        const errorStatus = error.message == "Contraseña incorrecta" || "Email no encontrado" ? 400 : 500
-        // si hay error, envía el que llega por error o 500 INTERNAL por default
+        const errorStatus = error.message == "Email not found" || "Incorrect password" ? 400 : 500
         res.status(errorStatus).json({ Error: error.message });
     }
 }
 
-
-*/
 
 /*
 export const actualizarRangoUser = async (req, res) => {

@@ -34,3 +34,35 @@ describe('user/create', () => {
         expect(response.body).toHaveProperty('message', 'user @holaxd created successfully');
     });
 })
+
+
+
+describe('user/login', () => {
+
+    beforeEach(async () => {
+        // Iniciar una conexión para la transacción
+        await db.query("BEGIN")
+    });
+
+    afterEach(async () => {
+        // Realizar el rollback de la transacción
+        await db.query("ROLLBACK")
+    })
+
+
+    it('Post /login - debería devolver un estado 201', async () => {
+        const response = await request(app)
+            .post('/user/login')
+            .send({
+                "email": "admin@admin.com",
+                "password": "jhgfdscrdasd",
+            });
+
+        // Verificar el código de estado
+        expect(response.statusCode).toBe(200);
+
+        // Verificar que el cuerpo de la respuesta es un objeto y contiene el mensaje esperado
+        expect(response.body).toBeInstanceOf(Object);;
+        expect(typeof response.body.token).toBe('string');
+    });
+})

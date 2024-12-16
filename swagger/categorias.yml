@@ -63,5 +63,40 @@ paths:
                     type: string
                     example: "User @example_UserName created successfully"
 
+  /user/login:
+    post:
+      summary: Login
+      tags:
+        - user
+      requestBody: # Define los parámetros de entrada
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "email@example.com"
+                password:
+                  type: string
+                  format: password
+                  example: "example_password"
+              required:
+                - email
+                - password
+      responses:
+        200:
+          description: Login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: "edwdh1DHDWNh4hwhda5n665dNHDFHfsfajdsnf..."
+
 
 
