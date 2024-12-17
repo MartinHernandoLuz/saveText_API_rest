@@ -1,4 +1,4 @@
-import { createUserDB, loginUserDB, } from '../models/user.model.js'
+import { createUserDB, loginUserDB, updateRoleUserDB, } from '../models/user.model.js'
 
 // function for create a user
 export const createUser = async (req, res) => {
@@ -31,19 +31,16 @@ export const loginUser = async (req, res) => {
 }
 
 
-/*
-export const actualizarRangoUser = async (req, res) => {
+
+export const updateRoleUser = async (req, res) => {
     const data = req.body; // saca la data Email y rango
     try {
-        // envía data a una función que está en userModel.js
-        const result = await actualizarRangoUserDB(data);
-        res.status(201).json(result); // si funciona, envía un 201 CREATED
+        // send data to function in user.model.js
+        const result = await updateRoleUserDB(data);
+        res.status(201).json(result); // 201 CREATED
     } catch (error) {
-        const errorStatus = error.message == "\
-        Rango inválido. Debe ser 'cliente', 'empleado' o 'administrador'" || "\
-        Email no encontrado" ? 400 : 500
+        const errorStatus = error.message == "Email not found" ? 400 : 500
 
         res.status(errorStatus).json({ Error: error.message });
     }
 }
-*/

@@ -39,9 +39,6 @@ export const createUserDB = async (data) => {
 
 
 
-
-
-
 // login
 export const loginUserDB = async (data) => {
   try {
@@ -85,38 +82,34 @@ export const loginUserDB = async (data) => {
 };
 
 
-/*
-// Iniciar sesión en la base de datos
-export const actualizarRangoUserDB = async (data) => {
-  try {
-    const { email, rango } = data;
-    if (rango != 'cliente' && rango != 'empleado' && rango != 'administrador') {
-      throw new Error("Rango inválido. Debe ser 'cliente', 'empleado' o 'administrador'");
-    }
 
-    // Buscar al usuario por email
-    const sentence = "SELECT * FROM usuario WHERE email = ?";
+// udate role
+export const updateRoleUserDB = async (data) => {
+  try {
+    const { email, role } = data;
+
+    // find email
+    const sentence = "SELECT * FROM users WHERE email = ?";
     const [rows] = await db.query(sentence, [email]);
 
-    // Verificar si el email existe
+    // email exists?
     if (rows.length === 0) {
-      throw new Error("Email no encontrado");
+      throw new Error("Email not found");
     }
 
-    const sentence2 = `UPDATE usuario SET rango = ? WHERE email = ?`
-    const [rows2] = await db.query(sentence2, [rango, email]);
+    const sentence2 = `UPDATE users SET role_user = ? WHERE email = ?`;
+    await db.query(sentence2, [role, email]);
 
     return {
-      message: "Rango actualizado con éxito",
       email: email,
-      nuevoRango: rango
+      newRole: role
     };
 
   } catch (error) {
-    if (error.message != "Email no encontrado" && error.message != "Rango inválido. Debe ser 'cliente', 'empleado' o 'administrador'") {
-      error.message = "Error inesperado al actualizar el rango"
+    console.log(error.message)
+    if (error.message != "Email not found") {
+      error.message = "unexpected error to update"
     }
     throw new Error(error.message);
   }
 };
-*/

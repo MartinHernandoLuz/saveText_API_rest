@@ -98,5 +98,42 @@ paths:
                     type: string
                     example: "edwdh1DHDWNh4hwhda5n665dNHDFHfsfajdsnf..."
 
-
-
+  /user/update-role:
+    put:
+      summary: update user
+      tags:
+        - user
+      security:
+        - admin: []
+      requestBody: # Define los parámetros de entrada
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "email@example.com"
+                role:
+                  type: string
+                  enum: ['user', 'admin']
+                  example: "'user' or 'admin'"
+              required:
+                - email
+                - role
+      responses:
+        201:
+          description: Update user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    example: "edwdh@example.com"
+                  role:
+                    type: string
+                    example: "admin"                 

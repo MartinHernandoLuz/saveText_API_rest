@@ -1,7 +1,8 @@
 import { Router } from "express";
-import { createUser, loginUser } from "../controller/user.controller.js";
-import { reqCreateControl, reqLoginControl } from "../middleware/reqCorrecionUser.js";
-import { esAdmin } from "../middleware/comprobarRango.js"
+import { createUser, loginUser, updateRoleUser } from "../controller/user.controller.js";
+import { reqControlUpdateRole, reqCreateControl, reqLoginControl } from "../middleware/reqCorrecionUser.js";
+import { isAdmin } from "../middleware/roleComprobation.js"
+
 
 const router = Router() // usa la función Router de Express, para construir las rutas 
 
@@ -11,9 +12,9 @@ router.post("/create", reqCreateControl, createUser) // función que crea usuari
 
 router.post("/login", reqLoginControl, loginUser) // función para iniciar seción, userController.js
 
-/*
-router.put("/actualizar", reqControlUpdateRango, esAdmin, actualizarRangoUser)
-*/
+
+router.put("/update-role", reqControlUpdateRole, isAdmin, updateRoleUser)
+
 
 router.use((req, res, next) => {
     res.status(404).json({
@@ -23,4 +24,4 @@ router.use((req, res, next) => {
     });
 });
 
-export default router; // es Importado en app.js
+export default router; // is imported in app.js

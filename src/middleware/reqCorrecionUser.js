@@ -68,23 +68,22 @@ export const reqLoginControl = [
 ];
 
 
-/*
-export const reqControlUpdateRango = [
-  // Validación del campo email
-  check("email")
+export const reqControlUpdateRole = [
+  // Validation for the email field
+  body("email")
     .isEmail()
     .withMessage("El email debe tener un formato válido")
     .notEmpty()
     .withMessage("El email es obligatorio"),
 
-  // Validación del campo password
-  check("rango")
-    .isIn(["cliente", "empleado", "administrador"])
-    .withMessage("El rango debe ser 'cliente', 'empleado' o 'administrador'")
+  // Validation for the password field
+  body("role")
+    .isIn(["user", "admin"])
+    .withMessage("the role has to be 'user' or 'admin'")
     .notEmpty()
     .withMessage("El rango es obligatorio"),
 
-  // Middleware para manejar los errores de validación
+  // Middleware to handle validation errors
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -93,4 +92,3 @@ export const reqControlUpdateRango = [
     next();
   },
 ];
-*/
