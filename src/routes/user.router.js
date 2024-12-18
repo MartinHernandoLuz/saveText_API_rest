@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { createUser, loginUser, updateRoleUser } from "../controller/user.controller.js";
-import { reqControlUpdateRole, reqCreateControl, reqLoginControl } from "../middleware/reqCorrecionUser.js";
+import { createUser, loginUser, updateRoleUser, updateUsername } from "../controller/user.controller.js";
+import { reqControlUpdateRole, reqControlUpdateUsername, reqCreateControl, reqLoginControl } from "../middleware/reqCorrecionUser.js";
 import { isAdmin } from "../middleware/roleComprobation.js"
 
 
@@ -12,6 +12,7 @@ router.post("/create", reqCreateControl, createUser) // función que crea usuari
 
 router.post("/login", reqLoginControl, loginUser) // función para iniciar seción, userController.js
 
+router.put("/update-username", reqControlUpdateUsername, updateUsername)
 
 router.put("/update-role", reqControlUpdateRole, isAdmin, updateRoleUser)
 

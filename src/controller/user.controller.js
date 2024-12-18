@@ -1,6 +1,6 @@
-import { createUserDB, loginUserDB, updateRoleUserDB, } from '../models/user.model.js'
+import { createUserDB, loginUserDB, updateRoleUserDB, updateUsernameDB, } from '../models/user.model.js'
 
-// function for create a user
+// handler for create a user
 export const createUser = async (req, res) => {
     const data = req.body; // saca la data Email y contraseña
     try {
@@ -9,7 +9,10 @@ export const createUser = async (req, res) => {
         res.status(201).json(result); // si funciona, envía un 201 CREATED
     } catch (error) {
         // si hay error, envía el que llega por error o 500 INTERNAL por default
-        const statusCode = error.message === "this email or username already in use" ? 400 : 500;
+        const expectedErrors = [
+            "this email or username already in use"
+        ];
+        const statusCode = expectedErrors.includes(error.message) ? 400 : 500
         res.status(statusCode).json({ "Error": error.message });
     }
 }
@@ -17,7 +20,7 @@ export const createUser = async (req, res) => {
 
 
 
-// function for login
+// handler for login
 export const loginUser = async (req, res) => {
     const data = req.body; // email and password
     try {
@@ -25,13 +28,36 @@ export const loginUser = async (req, res) => {
         const result = await loginUserDB(data);
         res.status(200).json(result); // if succesfull, status code 200 success 
     } catch (error) {
-        const errorStatus = error.message == "Email not found" || "Incorrect password" ? 400 : 500
+        const expectedErrors = [
+            "Email not found",
+            "Incorrect password"
+        ];
+        const errorStatus = expectedErrors.includes(error.message) ? 400 : 500
         res.status(errorStatus).json({ Error: error.message });
     }
 }
 
+// handler for update the Username
+export const updateUsername = async (req, res) => {
+    const data = req.body; // email and username
+    try {
+        // send data to function in user.model.js
+        const result = await updateUsernameDB(data);
+        res.status(201).json(result); // 201 CREATED
+    } catch (error) {
+        console.log(error.message)
+        const expectedErrors = [
+            "Incorrect password",
+            "Email not found",
+            "14 days have not passed since the last update",
+        ];
+        const errorStatus = expectedErrors.includes(error.message) ? 400 : 500
 
+        res.status(errorStatus).json({ Error: error.message });
+    }
+}
 
+// handler for update the User role
 export const updateRoleUser = async (req, res) => {
     const data = req.body; // saca la data Email y rango
     try {

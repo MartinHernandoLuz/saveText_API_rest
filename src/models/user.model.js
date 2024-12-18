@@ -5,6 +5,10 @@ import jwt from "jsonwebtoken";
 // db is in the configuration folder, this is used to access the database
 
 
+
+
+
+
 // Create a user in data base
 export const createUserDB = async (data) => {
   try {
@@ -30,10 +34,13 @@ export const createUserDB = async (data) => {
     };
   } catch (error) {
     console.log(error.message)
-    if (error.message != "this email or username already in use") {
-      error.message = "unexpected error to create user"
+    const expectedErrors = [
+      "this email or username already in use"
+    ];
+    if (!expectedErrors.includes(error.message)) {
+      throw new Error("unexpected error to create user")
     }
-    throw new Error(error.message)
+    throw error
   }
 };
 
@@ -74,14 +81,69 @@ export const loginUserDB = async (data) => {
 
   } catch (error) {
     console.log(error.message)
-    if (error.message != "Email not found" && error.message != "Incorrect password") {
-      error.message = "unexpected error to login"
+    const expectedErrors = [
+      "Email not found",
+      "Incorrect password",
+    ];
+    if (!expectedErrors.includes(error.message)) {
+      throw new Error("unexpected error to login")
     }
-    throw new Error(error.message);
+    throw error
   }
 };
 
+// update user
+export const updateUsernameDB = async (data) => {
+  try {
+    const { email, username, password } = data
 
+    // find email
+    const sentence = "SELECT * FROM users WHERE email = ?";
+    const [rows] = await db.query(sentence, [email]);
+    // email exists?
+    if (rows.length === 0) {
+      throw new Error("Email not found");
+    }
+
+
+    // Verify password
+    const user = rows[0]
+    const isPasswordValid = bcrypt.compareSync(password, user.password_hash);
+    if (!isPasswordValid) {
+      throw new Error("Incorrect password");
+    }
+
+    // begin the update
+    const sentence2 = `
+      UPDATE users 
+      SET username = ? 
+      WHERE email = ? 
+      AND DATEDIFF(NOW(), updated_at) >= 14`; // Is the difference between now and update_at more than 14 days?
+    const [result] = await db.query(sentence2, [username, email]);
+    if (result.affectedRows === 0) {
+      throw new Error(
+        "14 days have not passed since the last update"
+      )
+    };
+
+    return {
+      email: email,
+      newUsername: username,
+    };
+  } catch (error) {
+    console.log(error.message)
+    const expectedErrors = [
+      "Incorrect password",
+      "Email not found",
+      "14 days have not passed since the last update",
+    ];
+
+    if (!expectedErrors.includes(error.message)) {
+      throw new Error("Unexpected error while updating");
+    }
+    throw error
+  }
+}
 
 // udate role
 export const updateRoleUserDB = async (data) => {
@@ -102,14 +164,17 @@ export const updateRoleUserDB = async (data) => {
 
     return {
       email: email,
-      newRole: role
+      newRole: role,
     };
 
   } catch (error) {
     console.log(error.message)
-    if (error.message != "Email not found") {
-      error.message = "unexpected error to update"
+    const expectedErrors = [
+      "Email not found"
+    ];
+    if (!expectedErrors.includes(error.message)) {
+      throw new Error("Unexpected error while updating")
     }
-    throw new Error(error.message);
+    throw error
   }
 };

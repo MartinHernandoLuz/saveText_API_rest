@@ -137,3 +137,45 @@ paths:
                   role:
                     type: string
                     example: "admin"                 
+
+  /user/update-username:
+    put:
+      summary: update username
+      tags:
+        - user
+      requestBody: # Define los parámetros de entrada
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "email@example.com"
+                password:
+                  type: string
+                  format: password
+                  example: "example_password"
+                username:
+                  type: string
+                  example: "@example_UserName"
+              required:
+                - email
+                - password
+                - username
+      responses:
+        201:
+          description: Update username
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    example: "edwdh@example.com"
+                  newUsername:
+                    type: string
+                    example: "@example_UserName"                 

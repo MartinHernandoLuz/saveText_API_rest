@@ -67,6 +67,41 @@ export const reqLoginControl = [
   },
 ];
 
+export const reqControlUpdateUsername = [
+  // Validation for the email field
+  body("email")
+    .isEmail()
+    .withMessage("El email debe tener un formato válido")
+    .notEmpty()
+    .withMessage("El email es obligatorio"),
+
+  // Validation for the password field
+  body("password")
+    .isLength({ min: 8, max: 20 })
+    .withMessage("The password must be between 8 and 20 characters")
+    .notEmpty()
+    .withMessage("Password is required"),
+
+  // Validation for the password field
+  body("username")
+    .matches(/^@[a-zA-Z0-9_-]+$/)
+    .withMessage(
+      "The username must start with '@' and contain only alphanumeric characters, hyphens, or underscores"
+    )
+    .notEmpty()
+    .withMessage("Username is required"),
+
+  // Middleware to handle validation errors
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      console.log(errors.array())
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+];
+
 
 export const reqControlUpdateRole = [
   // Validation for the email field

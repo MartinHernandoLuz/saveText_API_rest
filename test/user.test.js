@@ -6,30 +6,30 @@ import jwt from 'jsonwebtoken'
 const token = jwt.sign(
     { email: "juan.perez@example.com", rango: "administrador" },
     process.env.JWT_SECRET,
-    { expiresIn: "1h" } // Tiempo de expiración del token
+    { expiresIn: "1h" } // token expiration time
 );
 
 const tokenAdmin = jwt.sign(
     { email: "admin@admin.com", role: "admin" },
     process.env.JWT_SECRET,
-    { expiresIn: "1h" } // Tiempo de expiración del token
+    { expiresIn: "1h" } // token expiration time
 );
 
 
 describe('user/create', () => {
 
     beforeEach(async () => {
-        // Iniciar una conexión para la transacción
+        // begin transaction
         await db.query("BEGIN")
     });
 
     afterEach(async () => {
-        // Realizar el rollback de la transacción
+        // go rollback in transaction
         await db.query("ROLLBACK")
     })
 
 
-    it('Post /user - debería devolver un estado 201', async () => {
+    it('Post /user - should return a status 201', async () => {
         const response = await request(app)
             .post('/user/create')
             .send({
@@ -39,10 +39,10 @@ describe('user/create', () => {
                 "full_name": "hola como estas"
             });
 
-        // Verificar el código de estado
+        // check the status code
         expect(response.statusCode).toBe(201);
 
-        // Verificar que el cuerpo de la respuesta es un objeto y contiene el mensaje esperado
+        // check if the response body is an object and contains the expected message
         expect(response.body).toBeInstanceOf(Object);
         expect(response.body).toHaveProperty('message', 'user @holaxd created successfully');
     });
@@ -53,17 +53,17 @@ describe('user/create', () => {
 describe('user/login', () => {
 
     beforeEach(async () => {
-        // Iniciar una conexión para la transacción
+        // begin transaction
         await db.query("BEGIN")
     });
 
     afterEach(async () => {
-        // Realizar el rollback de la transacción
+        // go rollback in transaction
         await db.query("ROLLBACK")
     })
 
 
-    it('Post /login - debería devolver un estado 201', async () => {
+    it('Post /login - should return a status 201', async () => {
         const response = await request(app)
             .post('/user/login')
             .send({
@@ -71,10 +71,10 @@ describe('user/login', () => {
                 "password": "jhgfdscrdasd",
             });
 
-        // Verificar el código de estado
+        // check the status code
         expect(response.statusCode).toBe(200);
 
-        // Verificar que el cuerpo de la respuesta es un objeto y contiene el mensaje esperado
+        // check if the response body is an object and contains the expected message
         expect(response.body).toBeInstanceOf(Object);;
         expect(typeof response.body.token).toBe('string');
     });
@@ -84,12 +84,12 @@ describe('user/login', () => {
 describe('user/update-role', () => {
 
     beforeEach(async () => {
-        // Iniciar una conexión para la transacción
+        // begin transaction
         await db.query("BEGIN")
     });
 
     afterEach(async () => {
-        // Realizar el rollback de la transacción
+        // go rollback in transaction
         await db.query("ROLLBACK")
     })
 
@@ -103,14 +103,71 @@ describe('user/update-role', () => {
                 "role": "user",
             });
 
-        // Verificar el código de estado
+        // check the status code
         expect(response.statusCode).toBe(201);
 
-        // Verificar que el cuerpo de la respuesta es un objeto y contiene el mensaje esperado
+        // check if the response body is an object and contains the expected message
         expect(response.body).toBeInstanceOf(Object);
         expect(response.body).toHaveProperty('newRole', 'user')
         expect(response.body).toHaveProperty('email', 'admin@admin.com')
         expect(typeof response.body.email).toBe('string');
         expect(typeof response.body.newRole).toBe('string');
     });
+})
+
+
+describe('user/update-username', () => {
+
+    beforeEach(async () => {
+        // begin transaction
+        await db.query("BEGIN")
+    });
+
+    afterEach(async () => {
+        // go rollback in transaction
+        await db.query("ROLLBACK")
+    })
+
+    /*
+        it('Put /update-username - should return a status 201', async () => {
+            const response = await request(app)
+                .put('/user/update-username')
+                .set("Authorization", `Bearer ${tokenAdmin}`)
+                .send({
+                    "email": "admin@admin.com",
+                    "password": "jhgfdscrdasd", // jhgfdscrdasd
+                    "username": "@admin2",
+                });
+    
+            // verify status code
+            expect(response.statusCode).toBe(201);
+    
+            // check if the response body is an object and contains the expected message
+            expect(response.body).toBeInstanceOf(Object);
+            expect(response.body).toHaveProperty('newUsername', '@admin2')
+            expect(response.body).toHaveProperty('email', 'admin@admin.com')
+            expect(typeof response.body.email).toBe('string');
+            expect(typeof response.body.newUsername).toBe('string');
+        });
+    */
+
+    it('Put /update-username - should return a status 400', async () => {
+        const response = await request(app)
+            .put('/user/update-username')
+            .set("Authorization", `Bearer ${tokenAdmin}`)
+            .send({
+                "email": "admin@admin.com",
+                "password": "jhgfdscrdasd", // jhgfdscrdasd
+                "username": "@admin2",
+            });
+
+        // verify status code
+        expect(response.statusCode).toBe(400);
+
+        // check if the response body is an object and contains the expected message
+        expect(response.body).toBeInstanceOf(Object);
+        expect(response.body).toHaveProperty('Error', '14 days have not passed since the last update')
+        expect(typeof response.body.Error).toBe('string');
+    });
+
 })
