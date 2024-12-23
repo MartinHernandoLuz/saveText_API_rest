@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: "API para guardar texto"
+  title: "API for save text"
   version: 1.0.0
 paths:
   /hola:
@@ -179,3 +179,45 @@ paths:
                   newUsername:
                     type: string
                     example: "@example_UserName"                 
+
+  /user/delete:
+    delete:
+      summary: delete user
+      tags:
+        - user
+      requestBody: # Define los parámetros de entrada
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "email@example.com"
+                password:
+                  type: string
+                  format: password
+                  example: "example_password"
+                username:
+                  type: string
+                  example: "@example_UserName"
+              required:
+                - email
+                - password
+                - username
+      responses:
+        201:
+          description: delete user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: bool
+                    example: true
+                  message:
+                    type: string
+                    example: "User deleted successfully"     

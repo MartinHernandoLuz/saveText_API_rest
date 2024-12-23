@@ -63,7 +63,7 @@ export const loginUserDB = async (data) => {
     const user = rows[0];
 
     // Verify password
-    const isPasswordValid = bcrypt.compareSync(password, user.password_hash);
+    const isPasswordValid = await bcrypt.compare(password, user.password_hash);
     if (!isPasswordValid) {
       throw new Error("Incorrect password");
     }
@@ -108,7 +108,7 @@ export const updateUsernameDB = async (data) => {
 
     // Verify password
     const user = rows[0]
-    const isPasswordValid = bcrypt.compareSync(password, user.password_hash);
+    const isPasswordValid = await bcrypt.compare(password, user.password_hash);
     if (!isPasswordValid) {
       throw new Error("Incorrect password");
     }
@@ -178,3 +178,52 @@ export const updateRoleUserDB = async (data) => {
     throw error
   }
 };
+
+// delete user
+export const deleteUserDB = async (data) => {
+  try {
+    const { email, password, username } = data;
+
+    // Find email and username
+    const sentence = "SELECT * FROM users WHERE email = ? AND username = ?";
+    const [rows] = await db.query(sentence, [email, username]);
+
+    // Email and username exist?
+    if (rows.length === 0) {
+      throw new Error("Email or username is incorrect");
+    }
+
+    const user = rows[0]; // First matching user
+
+    // Check if password is correct
+    const isPasswordCorrect = await bcrypt.compare(password, user.password_hash);
+    if (!isPasswordCorrect) {
+      throw new Error("Password is incorrect");
+    }
+
+    // Delete user
+    const sentence2 = "DELETE FROM users WHERE email = ? AND username = ?";
+    const [result] = await db.query(sentence2, [user.email, user.username]);
+
+    if (result.affectedRows === 0) {
+      throw new Error("Failed to delete user");
+    }
+
+    return { success: true, message: "User deleted successfully" }
+  } catch (error) {
+    console.log(error.message);
+
+    const expectedErrors = [
+      "Email or username is incorrect",
+      "Password is incorrect",
+      "Failed to delete user",
+    ];
+
+    if (!expectedErrors.includes(error.message)) {
+      throw new Error("Unexpected error while deleting");
+    }
+
+    throw error; // Re-throw expected errors
+  }
+};
+

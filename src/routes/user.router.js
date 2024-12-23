@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { createUser, loginUser, updateRoleUser, updateUsername } from "../controller/user.controller.js";
-import { reqControlUpdateRole, reqControlUpdateUsername, reqCreateControl, reqLoginControl } from "../middleware/reqCorrecionUser.js";
+import { createUser, deleteUser, loginUser, updateRoleUser, updateUsername } from "../controller/user.controller.js";
+import { reqControlDeleteUser, reqControlUpdateRole, reqControlUpdateUsername, reqCreateControl, reqLoginControl } from "../middleware/reqCorrecionUser.js";
 import { isAdmin } from "../middleware/roleComprobation.js"
 
 
@@ -15,6 +15,8 @@ router.post("/login", reqLoginControl, loginUser) // funciÃ³n para iniciar seciÃ
 router.put("/update-username", reqControlUpdateUsername, updateUsername)
 
 router.put("/update-role", reqControlUpdateRole, isAdmin, updateRoleUser)
+
+router.delete("/delete", reqControlDeleteUser, deleteUser)
 
 
 router.use((req, res, next) => {

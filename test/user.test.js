@@ -33,10 +33,10 @@ describe('user/create', () => {
         const response = await request(app)
             .post('/user/create')
             .send({
-                "email": "hola@hola.com",
-                "password": "jhgfdscr4",
-                "username": "@holaxd",
-                "full_name": "hola como estas"
+                "email": "holdsada@hola.com",
+                "password": "jhgfdsdsdsd",
+                "username": "@holaxdERS",
+                "full_name": "hola comdsado estas"
             });
 
         // check the status code
@@ -44,7 +44,7 @@ describe('user/create', () => {
 
         // check if the response body is an object and contains the expected message
         expect(response.body).toBeInstanceOf(Object);
-        expect(response.body).toHaveProperty('message', 'user @holaxd created successfully');
+        expect(response.body).toHaveProperty('message', 'user @holaxdERS created successfully');
     });
 })
 
@@ -168,6 +168,39 @@ describe('user/update-username', () => {
         expect(response.body).toBeInstanceOf(Object);
         expect(response.body).toHaveProperty('Error', '14 days have not passed since the last update')
         expect(typeof response.body.Error).toBe('string');
+    });
+
+})
+
+describe('user/delete', () => {
+
+    beforeEach(async () => {
+        // begin transaction
+        await db.query("BEGIN")
+    });
+
+    afterEach(async () => {
+        // go rollback in transaction
+        await db.query("ROLLBACK")
+    })
+
+
+
+    it('Delete /delete should return a status 200', async () => {
+        const response = await request(app)
+            .delete('/user/delete')
+            .send({
+                "email": "hola@hola.com",
+                "password": "jhgfdscr4",
+                "username": "@holaxd",
+            });
+
+        // verify status code
+        expect(response.statusCode).toBe(201);
+
+        expect(response.body).toBeInstanceOf(Object);
+        expect(response.body.success).toBe(true)
+        expect(response.body.message).toBe("User deleted successfully")
     });
 
 })

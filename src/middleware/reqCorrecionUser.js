@@ -127,3 +127,36 @@ export const reqControlUpdateRole = [
     next();
   },
 ];
+
+export const reqControlDeleteUser = [
+  // Validation for the email field
+  body("email")
+    .isEmail()
+    .withMessage("The email must have a valid format")
+    .notEmpty()
+    .withMessage("Email is required"),
+
+  // Validation for the username field
+  body("username")
+    .matches(/^@[a-zA-Z0-9_-]+$/)
+    .withMessage(
+      "The username must start with '@' and contain only alphanumeric characters, hyphens, or underscores"
+    )
+    .notEmpty()
+    .withMessage("Username is required"),
+
+  // Validation for the password field
+  body("password")
+    .isLength({ min: 8, max: 20 })
+    .withMessage("The password must be between 8 and 20 characters")
+    .notEmpty()
+    .withMessage("Password is required"),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+]

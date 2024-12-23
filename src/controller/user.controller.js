@@ -1,4 +1,4 @@
-import { createUserDB, loginUserDB, updateRoleUserDB, updateUsernameDB, } from '../models/user.model.js'
+import { createUserDB, deleteUserDB, loginUserDB, updateRoleUserDB, updateUsernameDB, } from '../models/user.model.js'
 
 // handler for create a user
 export const createUser = async (req, res) => {
@@ -66,6 +66,24 @@ export const updateRoleUser = async (req, res) => {
         res.status(201).json(result); // 201 CREATED
     } catch (error) {
         const errorStatus = error.message == "Email not found" ? 400 : 500
+
+        res.status(errorStatus).json({ Error: error.message });
+    }
+}
+
+export const deleteUser = async (req, res) => {
+    const data = req.body; // saca la data Email y rango
+    try {
+        // send data to function in user.model.js
+        const result = await deleteUserDB(data);
+        res.status(201).json(result); // 201 CREATED
+    } catch (error) {
+        console.log(error.message)
+        const expectedErrors = [
+            "Email or username is incorrect",
+            "Password is incorrect",
+        ];
+        const errorStatus = expectedErrors.includes(error.message) ? 400 : 500
 
         res.status(errorStatus).json({ Error: error.message });
     }
