@@ -45,7 +45,6 @@ export const updateUsername = async (req, res) => {
         const result = await updateUsernameDB(data);
         res.status(201).json(result); // 201 CREATED
     } catch (error) {
-        console.log(error.message)
         const expectedErrors = [
             "Incorrect password",
             "Email not found",

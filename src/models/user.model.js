@@ -17,7 +17,8 @@ export const createUserDB = async (data) => {
     // check if email or username is in database
     const find_email = "SELECT email FROM users WHERE email = ? OR username = ?";
     const [row] = await db.query(find_email, [email, username]);
-    if (row.length == 1) {
+    console.log(`tamaño de array ${row.length}`)
+    if (row.length > 0) {
       throw new Error("this email or username already in use");
     }
 
@@ -131,7 +132,6 @@ export const updateUsernameDB = async (data) => {
       newUsername: username,
     };
   } catch (error) {
-    console.log(error.message)
     const expectedErrors = [
       "Incorrect password",
       "Email not found",
@@ -168,7 +168,6 @@ export const updateRoleUserDB = async (data) => {
     };
 
   } catch (error) {
-    console.log(error.message)
     const expectedErrors = [
       "Email not found"
     ];

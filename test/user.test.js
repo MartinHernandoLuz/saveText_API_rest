@@ -29,14 +29,14 @@ describe('user/create', () => {
     })
 
 
-    it('Post /user - should return a status 201', async () => {
+    it('Post /user/create - should return a status 201', async () => {
         const response = await request(app)
             .post('/user/create')
             .send({
-                "email": "holdsada@hola.com",
-                "password": "jhgfdsdsdsd",
-                "username": "@holaxdERS",
-                "full_name": "hola comdsado estas"
+                "email": "ho@la.com",
+                "password": "jhgfdsdasde3d",
+                "username": "@h22sda342",
+                "full_name": "hola 22comado estas"
             });
 
         // check the status code
@@ -44,7 +44,7 @@ describe('user/create', () => {
 
         // check if the response body is an object and contains the expected message
         expect(response.body).toBeInstanceOf(Object);
-        expect(response.body).toHaveProperty('message', 'user @holaxdERS created successfully');
+        expect(response.body).toHaveProperty('message', 'user @h22sda342 created successfully');
     });
 })
 
