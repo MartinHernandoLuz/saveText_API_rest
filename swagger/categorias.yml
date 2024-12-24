@@ -185,7 +185,7 @@ paths:
       summary: delete user
       tags:
         - user
-      requestBody: # Define los parámetros de entrada
+      requestBody: 
         required: true
         content:
           application/json:
