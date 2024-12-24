@@ -13,6 +13,7 @@ CREATE TABLE users (
 
 CREATE TABLE notes (
     id_note INT AUTO_INCREMENT PRIMARY KEY,
+    note_name VARCHAR(255) NOT NULL,
     user_username VARCHAR(50) NOT NULL,
     encrypted_text MEDIUMTEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

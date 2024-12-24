@@ -10,9 +10,9 @@ export const hasPermission = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const rango = decoded.rango;
+    const role = decoded.role;
 
-    if (rango === 'empleado' || rango === 'administrador') {
+    if (role === 'user' || role === 'admin') {
       next(); // Permitir acceso si tiene el rango adecuado
     } else {
       res.status(403).json({ error: 'Acceso denegado: permisos insuficientes' });
@@ -35,16 +35,16 @@ export const hasPermission_dbComprobation = async (req, res, next) => {
     const email = decoded.email;
 
     // Paso 3: Consultar la base de datos para verificar el rango del usuario
-    const query = "SELECT rango FROM usuario WHERE email = ?";
+    const query = "SELECT role_user FROM users WHERE email = ?";
     const [results] = await db.query(query, [email]); // Usa await para esperar el resultado de la consulta
 
     if (results.length === 0) {
       return res.status(403).json({ error: 'Acceso denegado: usuario no encontrado' });
     }
 
-    const { rango } = results[0];
+    const { role_user } = results[0];
     // Paso 4: Verificar si el rango es 'empleado' o 'administrador'
-    if (rango === 'empleado' || rango === 'administrador') {
+    if (role_user === 'empleado' || role_user === 'administrador') {
       next(); // Permitir acceso si tiene el rango adecuado
     } else {
       res.status(403).json({ error: 'Acceso denegado: permisos insuficientes' });

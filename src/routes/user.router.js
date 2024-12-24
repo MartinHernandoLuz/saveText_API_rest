@@ -4,13 +4,13 @@ import { reqControlDeleteUser, reqControlUpdateRole, reqControlUpdateUsername, r
 import { isAdmin } from "../middleware/roleComprobation.js"
 
 
-const router = Router() // usa la función Router de Express, para construir las rutas 
+const router = Router()
 
 
-router.post("/create", reqCreateControl, createUser) // función que crea usuario, userController.js
+router.post("/create", reqCreateControl, createUser)
 
 
-router.post("/login", reqLoginControl, loginUser) // función para iniciar seción, userController.js
+router.post("/login", reqLoginControl, loginUser)
 
 router.put("/update-username", reqControlUpdateUsername, updateUsername)
 

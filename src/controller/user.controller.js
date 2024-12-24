@@ -18,8 +18,6 @@ export const createUser = async (req, res) => {
 }
 
 
-
-
 // handler for login
 export const loginUser = async (req, res) => {
     const data = req.body; // email and password

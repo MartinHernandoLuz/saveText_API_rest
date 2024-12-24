@@ -4,6 +4,7 @@ import { swaggerDOC } from './swagger/swagger.js'
 
 
 import userRoute from './src/routes/user.router.js'
+import notesRoute from './src/routes/notes.router.js'
 
 // the typical 
 const app = express();
@@ -15,7 +16,7 @@ app.use(express.json());
 
 // ROUTES
 app.use("/user", userRoute)
-
+app.use("/notes", notesRoute)
 
 
 app.get("/hola", (req, res) => {
