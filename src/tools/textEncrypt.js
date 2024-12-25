@@ -4,8 +4,6 @@ const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
 
 const IV_LENGTH = 16
 
-import crypto from 'crypto';
-
 // Function to encrypt text (wrapped in a Promise to use async/await)
 export async function encrypt(text) {
     return new Promise((resolve, reject) => {

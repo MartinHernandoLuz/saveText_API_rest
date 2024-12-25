@@ -1,5 +1,6 @@
 import db from "../config/db.js";
 import { decrypt, encrypt } from "../tools/textEncrypt.js";
+import bcrypt from 'bcryptjs'
 
 // Create a note in database
 export const createNoteDB = async (data) => {
@@ -12,6 +13,13 @@ export const createNoteDB = async (data) => {
 
         if (rows.length === 0) {
             throw new Error("This email or username does not exist");
+        }
+        // Check if note already exists in the database
+        const find_note = "SELECT note_name FROM notes WHERE user_username = ? and note_name = ?";
+        const [row2] = await db.query(find_note, [user_username, note_name]);
+
+        if (row2.length > 0) {
+            throw new Error("This note_name already exist");
         }
 
         // Verify password
@@ -31,14 +39,15 @@ export const createNoteDB = async (data) => {
         await db.query(insert_note, [user_username, note_name, encrypted_text]);
 
         return {
-            message: `Note "${note_name}" created successfully`
+            message: `Note ${note_name} created successfully`
         };
     } catch (error) {
         console.error(error.message);
 
         const expectedErrors = [
             "This email or username does not exist",
-            "Incorrect password"
+            "Incorrect password",
+            "This note_name already exist"
         ];
 
         // Handle unexpected errors
@@ -97,7 +106,7 @@ export const getNoteByNoteNameDB = async (data) => {
         const note = noteRows[0];
         const text = await decrypt(note.encrypted_text);
 
-        return { messgage: text };
+        return { message: text };
     } catch (error) {
         console.error("Error in getNoteByNoteName:", error);
 

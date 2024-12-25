@@ -44,7 +44,7 @@ export const hasPermission_dbComprobation = async (req, res, next) => {
 
     const { role_user } = results[0];
     // Paso 4: Verificar si el rango es 'empleado' o 'administrador'
-    if (role_user === 'empleado' || role_user === 'administrador') {
+    if (role_user === 'user' || role_user === 'admin') {
       next(); // Permitir acceso si tiene el rango adecuado
     } else {
       res.status(403).json({ error: 'Acceso denegado: permisos insuficientes' });

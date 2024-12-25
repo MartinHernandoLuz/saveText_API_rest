@@ -10,7 +10,7 @@ export const reqCreateNoteControl = [
 
     // Validation for the text field
     body("text")
-        .isLength({ max: 10000000 })
+        .isLength({ max: 1000000 })
         .withMessage("The text must not exceed 10,000,000 characters")
         .notEmpty()
         .withMessage("Text is required"),

@@ -1,4 +1,4 @@
-import { createNoteDB, deleteNoteByNoteNameDB, getNoteByNoteNameDB, getNotesByUserNameDB } from "../models/notes.model";
+import { createNoteDB, deleteNoteByNoteNameDB, getNoteByNoteNameDB, getNotesByUserNameDB } from "../models/notes.model.js";
 
 
 
@@ -11,7 +11,8 @@ export const createNote = async (req, res) => {
     } catch (error) {
         const expectedErrors = [
             "This email or username does not exist",
-            "Incorrect password"
+            "Incorrect password",
+            "This note_name already exist"
         ];
         const errorStatus = expectedErrors.includes(error.message) ? 400 : 500
         res.status(errorStatus).json({ Error: error.message });

@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { createNote, deleteNoteByNoteName, getNoteByNoteName, getNotesByUserName } from "../controller/notes.controller";
-import { hasPermission, hasPermission_dbComprobation } from "../middleware/roleComprobation";
-import { reqCreateNoteControl, reqDeleteNoteControl, reqGetAllNotesByUserControl, reqGetNoteByNameControl } from "../middleware/reqCorrectionNotes";
+import { createNote, deleteNoteByNoteName, getNoteByNoteName, getNotesByUserName } from "../controller/notes.controller.js";
+import { hasPermission, hasPermission_dbComprobation } from "../middleware/roleComprobation.js";
+import { reqCreateNoteControl, reqDeleteNoteControl, reqGetAllNotesByUserControl, reqGetNoteByNameControl } from "../middleware/reqCorrectionNotes.js";
 
 const router = Router()
 

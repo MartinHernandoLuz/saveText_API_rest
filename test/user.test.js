@@ -3,11 +3,6 @@ import request from 'supertest'
 import db from '../src/config/db.js'
 import jwt from 'jsonwebtoken'
 
-const token = jwt.sign(
-    { email: "juan.perez@example.com", rango: "administrador" },
-    process.env.JWT_SECRET,
-    { expiresIn: "1h" } // token expiration time
-);
 
 const tokenAdmin = jwt.sign(
     { email: "admin@admin.com", role: "admin" },
@@ -35,8 +30,8 @@ describe('user/create', () => {
             .send({
                 "email": "ho@la.com",
                 "password": "jhgfdsdasde3d",
-                "username": "@h22sda342",
-                "full_name": "hola 22comado estas"
+                "user_username": "@h22sda342",
+                "full_name": "hola 22comado estas",
             });
 
         // check the status code
