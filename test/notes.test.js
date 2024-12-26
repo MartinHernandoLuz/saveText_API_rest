@@ -17,7 +17,10 @@ const tokenUser = jwt.sign(
 );
 
 
-describe('notes/create', () => {
+
+
+
+describe('notes/createNote', () => {
 
     beforeEach(async () => {
         // begin transaction
@@ -29,13 +32,14 @@ describe('notes/create', () => {
         await db.query("ROLLBACK")
     })
 
-    it('Post /notes/create - should return a status 201', async () => {
+    it('Post /notes/createNote - should return a status 201', async () => {
         const response = await request(app)
-            .post('/notes/create')
+            .post('/notes/createNote')
+            .set("Authorization", `Bearer ${tokenUser}`)
             .send({
                 "email": "hola@hola.com",
                 "password": "jhgfdscr4",
-                "username": "@holaxd",
+                "user_username": "@holaxd",
                 "full_name": "hola como estas",
                 "note_name": "fiumba",
                 "text": "jajajaj cdcdcdcdcd"
@@ -47,5 +51,100 @@ describe('notes/create', () => {
         // check if the response body is an object and contains the expected message
         expect(response.body).toBeInstanceOf(Object);
         expect(response.body).toHaveProperty('message', 'Note fiumba created successfully');
+    });
+})
+
+describe('notes/getNote', () => {
+
+    beforeEach(async () => {
+        // begin transaction
+        await db.query("BEGIN")
+    });
+
+    afterEach(async () => {
+        // go rollback in transaction
+        await db.query("ROLLBACK")
+    })
+
+    it('Post /notes/getNote - should return a status 201', async () => {
+        const response = await request(app)
+            .post('/notes/getNote')
+            .set("Authorization", `Bearer ${tokenUser}`)
+            .send({
+                "email": "hola@hola.com",
+                "password": "jhgfdscr4",
+                "user_username": "@holaxd",
+                "note_name": "primera nota"
+            });
+
+        // check the status code
+        expect(response.statusCode).toBe(201);
+
+        // check if the response body is an object and contains the expected message
+        expect(response.body).toBeInstanceOf(Object);
+        expect(response.body.message).toBe("hola cómo estás");
+    });
+})
+
+describe('notes/getAllNotes', () => {
+
+    beforeEach(async () => {
+        // begin transaction
+        await db.query("BEGIN")
+    });
+
+    afterEach(async () => {
+        // go rollback in transaction
+        await db.query("ROLLBACK")
+    })
+
+    it('Post /notes/getAllNotes - should return a status 201', async () => {
+        const response = await request(app)
+            .post('/notes/getAllNotes')
+            .set("Authorization", `Bearer ${tokenUser}`)
+            .send({
+                "email": "hola@hola.com",
+                "password": "jhgfdscr4",
+                "user_username": "@holaxd"
+            });
+
+        // check the status code
+        expect(response.statusCode).toBe(201);
+
+        // check if the response body is an object and contains the expected message
+        expect(response.body).toBeInstanceOf(Object);
+        expect(response.body.notes).toBeInstanceOf(Array);
+    });
+})
+
+describe('notes/deleteNote', () => {
+
+    beforeEach(async () => {
+        // begin transaction
+        await db.query("BEGIN")
+    });
+
+    afterEach(async () => {
+        // go rollback in transaction
+        await db.query("ROLLBACK")
+    })
+
+    it('Post /notes/deleteNote - should return a status 201', async () => {
+        const response = await request(app)
+            .delete('/notes/deleteNote')
+            .set("Authorization", `Bearer ${tokenUser}`)
+            .send({
+                "email": "hola@hola.com",
+                "password": "jhgfdscr4",
+                "user_username": "@holaxd",
+                "note_name": "primera nota"
+            });
+
+        // check the status code
+        expect(response.statusCode).toBe(201);
+
+        // check if the response body is an object and contains the expected message
+        expect(response.body).toBeInstanceOf(Object);
+        expect(response.body.message).toBe("Note successfully deleted");
     });
 })

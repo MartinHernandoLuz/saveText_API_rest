@@ -30,7 +30,7 @@ describe('user/create', () => {
             .send({
                 "email": "ho@la.com",
                 "password": "jhgfdsdasde3d",
-                "user_username": "@h22sda342",
+                "username": "@h22sda342",
                 "full_name": "hola 22comado estas",
             });
 

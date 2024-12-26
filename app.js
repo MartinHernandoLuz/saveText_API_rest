@@ -32,7 +32,7 @@ swaggerDOC(app, PORT);
 
 // default rute
 app.use("/", (req, res) => {
-    res.json({ mensaje: "acá no hay nada" })
+    res.status(200).json({ message: "there is nothing here" })
 })
 
 
