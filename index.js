@@ -11,7 +11,6 @@ app.use((err, req, res, next) => {
 
 
 
-// esto es sólo para arrancar el server
 const PORT = process.env.PORT || 3000;
 
 
