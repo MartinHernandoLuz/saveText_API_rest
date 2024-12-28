@@ -59,6 +59,7 @@ export const createNoteDB = async (data) => {
     }
 };
 
+// Get note by note name
 export const getNoteByNoteNameDB = async (data) => {
     try {
         const { note_name, user_username, password, email } = data;
@@ -123,6 +124,7 @@ export const getNoteByNoteNameDB = async (data) => {
     }
 };
 
+// get all notes by username
 export const getNotesByUserNameDB = async (data) => {
     try {
         const { user_username, password, email } = data;
@@ -175,7 +177,15 @@ export const getNotesByUserNameDB = async (data) => {
     }
 };
 
+// update note name by username (####### SIN TERMINAR)
+export const updateNoteNameDB = async (data) => {
 
+}
+
+// update text by user and username (######## SIN TERMINAR)
+export const updateTextDB = async (data) => { }
+
+// delete note by note name and username
 export const deleteNoteByNoteNameDB = async (data) => {
     try {
         const { user_username, password, email, note_name } = data;

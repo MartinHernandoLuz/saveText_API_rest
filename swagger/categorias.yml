@@ -221,3 +221,179 @@ paths:
                   message:
                     type: string
                     example: "User deleted successfully"     
+
+
+
+
+
+  /notes/createNote:
+    post:
+      summary: create note
+      tags:
+        - notes
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "email@example.com"
+                password:
+                  type: string
+                  format: password
+                  example: "example_password"
+                user_username:
+                  type: string
+                  example: "@example_UserName"
+                note_name:
+                  type: string
+                  example: "example title"                  
+                text:
+                  type: string
+                  example: "hello world!"
+              required:
+                - email
+                - password
+                - username
+                - note_name
+                - text
+      responses:
+        201:
+          description: create note
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Note example title created successfully" 
+
+  /notes/getNote:
+    post:
+      summary: get note by note name
+      tags:
+        - notes
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "email@example.com"
+                password:
+                  type: string
+                  format: password
+                  example: "example_password"
+                user_username:
+                  type: string
+                  example: "@example_UserName"
+                note_name:
+                  type: string
+                  example: "example title"                  
+              required:
+                - email
+                - password
+                - username
+                - note_name
+      responses:
+        201:
+          description: create note
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "saved text" 
+
+  /notes/getAllNotes:
+    post:
+      summary: get all note names by username
+      tags:
+        - notes
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "email@example.com"
+                password:
+                  type: string
+                  format: password
+                  example: "example_password"
+                user_username:
+                  type: string
+                  example: "@example_UserName"               
+              required:
+                - email
+                - password
+                - username
+      responses:
+        201:
+          description: create note
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  notes:
+                    type: array
+                    example: [{"note_name":"first example title"}, {"note_name":"second example title"}] 
+
+  /notes/deleteNote:
+    delete:
+      summary: delete note by name and username
+      tags:
+        - notes
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "email@example.com"
+                password:
+                  type: string
+                  format: password
+                  example: "example_password"
+                user_username:
+                  type: string
+                  example: "@example_UserName"
+                note_name:
+                  type: string
+                  example: "example title"                  
+              required:
+                - email
+                - password
+                - username
+                - note_name
+      responses:
+        201:
+          description: create note
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Note successfully deleted" 
