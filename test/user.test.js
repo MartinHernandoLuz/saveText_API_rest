@@ -123,30 +123,8 @@ describe('user/update-username', () => {
         await db.query("ROLLBACK")
     })
 
-    /*
-        it('Put /update-username - should return a status 201', async () => {
-            const response = await request(app)
-                .put('/user/update-username')
-                .set("Authorization", `Bearer ${tokenAdmin}`)
-                .send({
-                    "email": "admin@admin.com",
-                    "password": "jhgfdscrdasd", // jhgfdscrdasd
-                    "username": "@admin2",
-                });
-    
-            // verify status code
-            expect(response.statusCode).toBe(201);
-    
-            // check if the response body is an object and contains the expected message
-            expect(response.body).toBeInstanceOf(Object);
-            expect(response.body).toHaveProperty('newUsername', '@admin2')
-            expect(response.body).toHaveProperty('email', 'admin@admin.com')
-            expect(typeof response.body.email).toBe('string');
-            expect(typeof response.body.newUsername).toBe('string');
-        });
-    */
 
-    it('Put /update-username - should return a status 400', async () => {
+    it('Put /update-username - should return a status 201', async () => {
         const response = await request(app)
             .put('/user/update-username')
             .set("Authorization", `Bearer ${tokenAdmin}`)
@@ -157,13 +135,35 @@ describe('user/update-username', () => {
             });
 
         // verify status code
-        expect(response.statusCode).toBe(400);
+        expect(response.statusCode).toBe(201);
 
         // check if the response body is an object and contains the expected message
         expect(response.body).toBeInstanceOf(Object);
-        expect(response.body).toHaveProperty('Error', '14 days have not passed since the last update')
-        expect(typeof response.body.Error).toBe('string');
+        expect(response.body).toHaveProperty('newUsername', '@admin2')
+        expect(response.body).toHaveProperty('email', 'admin@admin.com')
+        expect(typeof response.body.email).toBe('string');
+        expect(typeof response.body.newUsername).toBe('string');
     });
+    /*
+        it('Put /update-username - should return a status 400', async () => {
+            const response = await request(app)
+                .put('/user/update-username')
+                .set("Authorization", `Bearer ${tokenAdmin}`)
+                .send({
+                    "email": "admin@admin.com",
+                    "password": "jhgfdscrdasd", // jhgfdscrdasd
+                    "username": "@admin2",
+                });
+    
+            // verify status code
+            expect(response.statusCode).toBe(400);
+    
+            // check if the response body is an object and contains the expected message
+            expect(response.body).toBeInstanceOf(Object);
+            expect(response.body).toHaveProperty('Error', '14 days have not passed since the last update')
+            expect(typeof response.body.Error).toBe('string');
+        });
+        */
 
 })
 
