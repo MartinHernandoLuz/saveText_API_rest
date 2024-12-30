@@ -179,11 +179,118 @@ export const getNotesByUserNameDB = async (data) => {
 
 // update note name by username (####### SIN TERMINAR)
 export const updateNoteNameDB = async (data) => {
+    try {
+        const { note_name, new_note_name, user_username, password, email } = data;
 
+        // Check if email or username exists in the database
+        const find_email = "SELECT email, password_hash FROM users WHERE email = ? OR username = ?";
+        const [rows] = await db.query(find_email, [email, user_username]);
+
+        if (rows.length === 0) {
+            throw new Error("Invalid credentials");
+        }
+
+        // Verify password
+        const user = rows[0]; // Get the first row
+        const isPasswordValid = await bcrypt.compare(password, user.password_hash);
+        if (!isPasswordValid) {
+            throw new Error("Invalid credentials");
+        }
+
+        // Check if note name exists in the database and new_note_name already exists
+        const find_note = "SELECT note_name FROM notes WHERE user_username = ? and note_name = ?";
+        const [row2] = await db.query(find_note, [user_username, note_name]);
+
+        if (row2.length === 0) {
+            throw new Error("Note name does not exist");
+        }
+        else if (row2[0].note_name === new_note_name) {
+            throw new Error("New note name already exists");
+        }
+
+
+        // update note name
+        const sentence2 = `UPDATE notes 
+                            SET note_name = ? 
+                            WHERE user_username = ? and note_name = ?`;
+        await db.query(sentence2, [new_note_name, user_username, note_name]);
+
+        return { message: `${note_name} updated to ${new_note_name}` };
+
+    } catch (error) {
+        console.error("Error in updateNoteNameDB: ", error);
+
+        const expectedErrors = [
+            "Invalid credentials",
+            "Note name does not exist",
+            "New note name already exists"
+        ];
+
+        if (!expectedErrors.includes(error.message)) {
+            throw new Error("Unexpected error while updating note name");
+        }
+
+        throw error; // Rethrow known errors
+    }
 }
 
 // update text by user and username (######## SIN TERMINAR)
-export const updateTextDB = async (data) => { }
+export const updateTextDB = async (data) => {
+    try {
+        const { note_name, new_text, user_username, email, password } = data;
+
+        // Check if email or username exists in the database
+        const find_email = "SELECT email, password_hash FROM users WHERE email = ? OR username = ?";
+        const [rows] = await db.query(find_email, [email, user_username]);
+
+        if (rows.length === 0) {
+            throw new Error("Invalid credentials");
+        }
+
+        // Verify password
+        const user = rows[0]; // Get the first row
+        const isPasswordValid = await bcrypt.compare(password, user.password_hash);
+        if (!isPasswordValid) {
+            throw new Error("Invalid credentials");
+        }
+
+        // Check if note  exists in the database
+        const find_note = "SELECT note_name FROM notes WHERE user_username = ? and note_name = ?";
+        const [row2] = await db.query(find_note, [user_username, note_name]);
+
+        if (row2.length === 0) {
+            throw new Error("The note name does not exist");
+        }
+
+
+
+        // Encrypt the text for the note
+        const encrypted_text = await encrypt(new_text);
+
+        console.log(encrypted_text);
+
+        // update note name
+        const sentence2 = `UPDATE notes 
+                            SET encrypted_text = ? 
+                            WHERE user_username = ? and note_name = ?`;
+        await db.query(sentence2, [encrypted_text, user_username, note_name]);
+
+        return { message: `text updated successfully` };
+    } catch (error) {
+        console.error("Error in updatedNoteNameDB: ", error);
+
+        const expectedErrors = [
+            "Invalid credentials",
+            "The note name does not exist"
+        ];
+
+        if (!expectedErrors.includes(error.message)) {
+            throw new Error("Unexpected error while retrieving note");
+        }
+
+        throw error; // Rethrow known errors
+    }
+}
 
 // delete note by note name and username
 export const deleteNoteByNoteNameDB = async (data) => {

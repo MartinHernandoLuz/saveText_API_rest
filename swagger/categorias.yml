@@ -397,3 +397,98 @@ paths:
                   message:
                     type: string
                     example: "Note successfully deleted" 
+
+
+  /notes/updateNoteName:
+    put:
+      summary: update note name
+      tags:
+        - notes
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "email@example.com"
+                password:
+                  type: string
+                  format: password
+                  example: "example_password"
+                user_username:
+                  type: string
+                  example: "@example_UserName"
+                note_name:
+                  type: string
+                  example: "example title"     
+                new_note_name:
+                  type: string
+                  example: "example new title"               
+              required:
+                - email
+                - password
+                - username
+                - note_name
+                - new_note_name
+      responses:
+        201:
+          description: create note
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "example title updated to example new title"       
+
+  /notes/updateText:
+    put:
+      summary: update text
+      tags:
+        - notes
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "email@example.com"
+                password:
+                  type: string
+                  format: password
+                  example: "example_password"
+                user_username:
+                  type: string
+                  example: "@example_UserName"
+                note_name:
+                  type: string
+                  example: "example title"     
+                new_text:
+                  type: string
+                  example: "new hello world!"               
+              required:
+                - email
+                - password
+                - username
+                - note_name
+                - new_text
+      responses:
+        201:
+          description: create note
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "text updated successfully"              

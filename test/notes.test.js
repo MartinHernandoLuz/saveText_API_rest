@@ -117,6 +117,72 @@ describe('notes/getAllNotes', () => {
     });
 })
 
+describe('notes/updateNoteName', () => {
+
+    beforeEach(async () => {
+        // begin transaction
+        await db.query("BEGIN")
+    });
+
+    afterEach(async () => {
+        // go rollback in transaction
+        await db.query("ROLLBACK")
+    })
+
+    it('Put /notes/updateNoteName - should return a status 201', async () => {
+        const response = await request(app)
+            .put('/notes/updateNoteName')
+            .set("Authorization", `Bearer ${tokenUser}`)
+            .send({
+                "email": "hola@hola.com",
+                "password": "jhgfdscr4",
+                "user_username": "@holaxd",
+                "note_name": "primera nota",
+                "new_note_name": "first note"
+            });
+
+        // check the status code
+        expect(response.statusCode).toBe(201);
+
+        // check if the response body is an object and contains the expected message
+        expect(response.body).toBeInstanceOf(Object);
+        expect(response.body).toHaveProperty('message', 'primera nota updated to first note');
+    });
+})
+
+describe('notes/updateText', () => {
+
+    beforeEach(async () => {
+        // begin transaction
+        await db.query("BEGIN")
+    });
+
+    afterEach(async () => {
+        // go rollback in transaction
+        await db.query("ROLLBACK")
+    })
+
+    it('Put /notes/updateText - should return a status 201', async () => {
+        const response = await request(app)
+            .put('/notes/updateText')
+            .set("Authorization", `Bearer ${tokenUser}`)
+            .send({
+                "email": "hola@hola.com",
+                "password": "jhgfdscr4",
+                "user_username": "@holaxd",
+                "note_name": "primera nota",
+                "new_text": "dasdasdsdknfjfnsnfjsafn"
+            });
+
+        // check the status code
+        expect(response.statusCode).toBe(201);
+
+        // check if the response body is an object and contains the expected message
+        expect(response.body).toBeInstanceOf(Object);
+        expect(response.body).toHaveProperty('message', 'text updated successfully');
+    });
+})
+
 describe('notes/deleteNote', () => {
 
     beforeEach(async () => {
