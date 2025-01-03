@@ -1,0 +1,14 @@
+[
+    {
+        "email": "hola@hola.com",
+        "password": "jhgfdscr4",
+        "username": "@holaxd",
+        "full_name": "hola como estas"
+    },
+    {
+        "email": "admin@admin.com",
+        "password": "jhgfdscrdasd",
+        "username": "@admin",
+        "full_name": "admin del servidor"
+    }
+]
